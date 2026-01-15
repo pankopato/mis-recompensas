@@ -1,176 +1,97 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/186/186313.png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tarjeta de Lealtad Pro</title>
+    <title>Club de Recompensas Pro</title>
     <style>
-        :root {
-            --primary: #2563eb;
-            --bg: #eff6ff;
-            --card: #ffffff;
-            --text: #1e293b;
-            --accent: #f59e0b;
-            --success: #10b981;
-        }
-
-        body {
-            font-family: 'Segoe UI', Roboto, sans-serif;
-            background-color: var(--bg);
-            color: var(--text);
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-            padding: 20px;
-        }
-
-        .container { width: 100%; max-width: 360px; }
-
-        .card {
-            background: var(--card);
-            border-radius: 30px;
-            padding: 30px 20px;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            border: 1px solid rgba(255,255,255,0.3);
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-            margin: 25px 0;
-        }
-
-        .stamp {
-            aspect-ratio: 1/1;
-            border: 2px solid #e2e8f0;
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 1.1rem;
-            color: #94a3b8;
-            background: #f8fafc;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        .stamp.active {
-            background-color: var(--primary);
-            border-color: var(--primary);
-            color: white;
-            transform: scale(1.1) rotate(5deg);
-            box-shadow: 0 5px 15px rgba(37, 99, 235, 0.4);
-        }
-
-        .stamp.reward { border-color: var(--accent); color: var(--accent); font-size: 1.5rem; }
-        .stamp.reward.active { background-color: var(--accent); color: white; border-color: var(--accent); }
-
-        .status-badge {
-            display: inline-block;
-            padding: 5px 15px;
-            border-radius: 20px;
-            background: #e0e7ff;
-            color: var(--primary);
-            font-weight: 700;
-            font-size: 0.9rem;
-            margin-bottom: 10px;
-        }
-
-        /* Botón Secreto del Dueño */
-        .admin-trigger {
-            margin-top: 50px;
-            width: 50px;
-            height: 50px;
-            background: transparent;
-            border: none;
-            cursor: pointer;
-            opacity: 0.05; /* Casi invisible */
-        }
+        :root { --primary: #6366f1; --bg: #f8fafc; --card: #ffffff; --text: #1e293b; --accent: #fbbf24; }
+        body { font-family: sans-serif; background: var(--bg); display: flex; justify-content: center; padding: 20px; color: var(--text); }
+        .container { width: 100%; max-width: 400px; text-align: center; }
+        .card { background: var(--card); border-radius: 24px; padding: 25px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
+        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 20px; }
+        .stamp { aspect-ratio: 1/1; border: 2px dashed #cbd5e1; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #94a3b8; }
+        .stamp.active { background: var(--primary); color: white; border-style: solid; border-color: var(--primary); }
+        .stamp.reward { border-color: var(--accent); color: var(--accent); }
+        .stamp.reward.active { background: var(--accent); color: white; }
+        .loader { border: 4px solid #f3f3f3; border-top: 4px solid var(--primary); border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; display: inline-block; margin: 10px; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        #msg { font-weight: bold; margin: 10px 0; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <div style="text-align: center; margin-bottom: 25px;">
-        <h1 style="margin:0; font-size: 1.8rem;">🌟 Mis Recompensas</h1>
-        <p style="color: #64748b; font-size: 0.9rem;">Cada compra te acerca a tu regalo</p>
-    </div>
-
+    <h1>🎁 Mi Club</h1>
     <div class="card">
-        <div class="status-badge" id="statusBadge">0 de 9 pasos completados</div>
+        <div id="loader" class="loader"></div>
+        <p id="msg">Cargando tus sellos...</p>
         
-        <div class="grid" id="loyaltyGrid">
-            <div class="stamp">1</div>
-            <div class="stamp">2</div>
-            <div class="stamp">3</div>
-            <div class="stamp">4</div>
-            <div class="stamp">5</div>
-            <div class="stamp">6</div>
-            <div class="stamp">7</div>
-            <div class="stamp">8</div>
-            <div class="stamp reward">🎁</div>
+        <div class="grid" id="grid">
+            <div class="stamp">1</div><div class="stamp">2</div><div class="stamp">3</div>
+            <div class="stamp">4</div><div class="stamp">5</div><div class="stamp">6</div>
+            <div class="stamp">7</div><div class="stamp">8</div><div class="stamp reward">🎁</div>
         </div>
-        
-        <p id="mainInstruction" style="font-size: 0.85rem; color: #64748b;">Presenta tu celular al vendedor al realizar tu pago.</p>
     </div>
-
-    <button class="admin-trigger" onclick="adminAction()">.</button>
+    <p style="font-size: 0.8rem; color: #64748b; margin-top: 20px;">Los sellos se actualizan automáticamente al realizar tu compra.</p>
 </div>
 
 <script>
     // --- CONFIGURACIÓN ---
-    const MI_PIN = "1234"; // <--- CAMBIA TU CONTRASEÑA AQUÍ
-    // ---------------------
-
-    const stamps = document.querySelectorAll('.stamp');
-    const badge = document.getElementById('statusBadge');
-    const instruction = document.getElementById('mainInstruction');
+    // PEGA AQUÍ EL LINK CSV QUE COPIASTE DE GOOGLE SHEETS
+    const URL_SHEETS = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRbXL1Y_NsoPSaYsTJ5OJCQjFemmQTj94AkZku0bxSi4oKvbpJ9KOHwkXE0mgXxmLZA40uwv4rkV1WG/pubhtml";
     
-    let count = localStorage.getItem('userStamps') ? parseInt(localStorage.getItem('userStamps')) : 0;
+    // Obtener el ID del cliente de la URL (ejemplo: mipagina.com/?id=juan77)
+    const params = new URLSearchParams(window.location.search);
+    const clienteId = params.get('id');
 
-    function updateUI() {
-        stamps.forEach((s, i) => {
-            if (i < count) s.classList.add('active');
-            else s.classList.remove('active');
-        });
-
-        badge.innerText = `${count} de 9 sellos obtenidos`;
-
-        if (count >= 9) {
-            badge.innerText = "¡RECOMPENSA LISTA!";
-            badge.style.background = "#fef3c7";
-            badge.style.color = "#d97706";
-            instruction.innerHTML = "<strong>¡Felicidades!</strong> Muestra esto para canjear tu premio.";
+    async function consultarSellos() {
+        if (!clienteId) {
+            document.getElementById('msg').innerText = "Error: Enlace de cliente no válido.";
+            document.getElementById('loader').style.display = 'none';
+            return;
         }
-    }
 
-    function adminAction() {
-        const pass = prompt("Introduce el PIN de Vendedor:");
-        
-        if (pass === MI_PIN) {
-            if (count >= 9) {
-                if(confirm("¿Deseas canjear el premio y reiniciar la tarjeta?")) {
-                    count = 0;
+        try {
+            // Agregamos un número aleatorio al final para evitar que el navegador guarde una copia vieja (caché)
+            const respuesta = await fetch(URL_SHEETS + "&cache=" + Math.random());
+            const data = await respuesta.text();
+            const filas = data.split("\n");
+            
+            let sellosEncontrados = 0;
+            let usuarioExiste = false;
+
+            filas.forEach(fila => {
+                const columnas = fila.split(",");
+                if (columnas[0].trim().toLowerCase() === clienteId.toLowerCase()) {
+                    sellosEncontrados = parseInt(columnas[1]);
+                    usuarioExiste = true;
                 }
+            });
+
+            if (usuarioExiste) {
+                dibujarSellos(sellosEncontrados);
+                document.getElementById('msg').innerText = `¡Hola! Tienes ${sellosEncontrados} de 9 sellos.`;
             } else {
-                count++;
+                document.getElementById('msg').innerText = "Cliente no registrado.";
             }
-            localStorage.setItem('userStamps', count);
-            updateUI();
-        } else if (pass !== null) {
-            alert("PIN Incorrecto");
+        } catch (e) {
+            document.getElementById('msg').innerText = "Error de conexión.";
         }
+        document.getElementById('loader').style.display = 'none';
     }
 
-    // Iniciar
-    updateUI();
-</script>
+    function dibujarSellos(num) {
+        const stamps = document.querySelectorAll('.stamp');
+        stamps.forEach((s, i) => {
+            if (i < num) s.classList.add('active');
+        });
+    }
 
+    consultarSellos();
+</script>
 </body>
+</html>
 
 </html>
+
