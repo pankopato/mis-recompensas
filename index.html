@@ -105,7 +105,7 @@
         document.getElementById('loader').style.display = 'none';
     }
 
-    function actualizarVista(num) {
+   function actualizarVista(num) {
         const stamps = document.querySelectorAll('.stamp');
         const prizeDisplay = document.getElementById('prize-display');
         
@@ -121,14 +121,20 @@
 
         document.getElementById('msg').innerText = `¡Llevas ${num} de 9 visitas!`;
 
+        // NUEVA LÓGICA DE PREMIOS EXACTOS
         let premio = "";
-        if (num >= 9) {
-            premio = '<div class="prize-text">🏆 DOGGO CLUB O CHILI GRATIS</div>';
-        } else if (num >= 6) {
-            premio = '<div class="prize-text">🌭 DOGGO STREET GRATIS</div>';
-        } else if (num >= 3) {
-            premio = '<div class="prize-text">🎨 STICKER GRATIS</div>';
+        
+        if (num === 3) {
+            premio = '<div class="prize-text">🎨 ¡GENIAL!<br>Sticker GRATIS</div>';
+        } else if (num === 6) {
+            premio = '<div class="prize-text">🌭 ¡LOGRADO!<br> 1 Doggo Street GRATIS</div>';
+        } else if (num === 9) {
+            premio = '<div class="prize-text">🏆 ¡META FINAL!<br> 1 Doggo Club o 1 Chili Doggie GRATIS</div>';
+        } else {
+            // Si no es 3, 6 o 9, el cuadro de texto estará vacío
+            premio = "";
         }
+        
         prizeDisplay.innerHTML = premio;
     }
 
@@ -136,6 +142,7 @@
 </script>
 </body>
 </html>
+
 
 
 
